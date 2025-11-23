@@ -1,20 +1,44 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import { Toaster } from "./components/ui/sonner";
-
+import { ProtectedRoute, PublicRoute } from "./routes/ProtectedRoute";
 
 const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/home" element={<HomePage />} /> 
+        <Route
+          path="/"
+          element={
+            <PublicRoute>
+              <LoginPage />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <RegisterPage />
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
-       <Toaster position="top-center"/>
+
+      <Toaster position="top-center" />
     </BrowserRouter>
   );
 };
