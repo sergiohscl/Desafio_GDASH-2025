@@ -10,6 +10,21 @@ import { WeatherTemperatureChart } from "@/components/layout/weather/WeatherTemp
 import { WeatherTable } from "@/components/layout/weather/WeatherTable";
 import { WeatherInsightsCard } from "@/components/layout/weather/WeatherInsightsCard";
 
+// helper para normalizar strings (remove acentos, minúsculas)
+function normalize(str: string): string {
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+// extrai a cidade do texto: "Em Maceió, a temperatura..."
+function extractCityFromInsight(text: string): string | null {
+  const match = text.match(/^Em\s+([^,]+),/);
+  return match ? match[1].trim() : null;
+}
+
 function HomePage() {
   const [logs, setLogs] = useState<WeatherLog[]>([]);
   const [insights, setInsights] = useState<string>("");
@@ -70,7 +85,6 @@ function HomePage() {
       const logsResponse = await weatherService.listWeatherLogs({
         limit: pageSize,
         offset: (page - 1) * pageSize,
-        // se depois você filtrar por cidade no backend, pode mandar: city: selectedCity,
       });
 
       setLogs(logsResponse.results);
@@ -95,16 +109,18 @@ function HomePage() {
       if (latest) {
         setInsights(latest.text);
         setLatestInsightId(latest.id);
+      } else {
+        setInsights("");
+        setLatestInsightId(null);
       }
     } catch (error) {
-      // se der erro, só mostra toast opcional
       console.error(error);
     } finally {
       setIsInsightsLoading(false);
     }
   };
 
-  // carrega logs + último insight na entrada e ao trocar days/page
+  // carga inicial: logs + último insight geral
   useEffect(() => {
     loadLogs();
     loadLatestInsight();
@@ -117,6 +133,60 @@ function HomePage() {
       setSelectedLog(null);
     }
   }, [logs, selectedLog]);
+
+  // 🔹 quando selecionar um registro na tabela, buscar insight da cidade
+  useEffect(() => {
+    const loadCityInsight = async () => {
+      if (!selectedLog) {
+        // sem seleção → volta para o último insight global
+        await loadLatestInsight();
+        return;
+      }
+
+      try {
+        setIsInsightsLoading(true);
+
+        const response = await weatherService.getWeatherInsights({
+          limit: 50,
+          offset: 0,
+        });
+
+        // torna robusto: aceita {results: [...] } ou apenas [...]
+        const raw: any = response;
+        const list: WeatherInsight[] = Array.isArray(raw)
+          ? raw
+          : Array.isArray(raw?.results)
+          ? raw.results
+          : [];
+
+        const selectedCityNorm = normalize(selectedLog.city);
+
+        const matched = list.find((insight) => {
+          if (!insight?.text) return false;
+          const cityFromText = extractCityFromInsight(insight.text);
+          return (
+            cityFromText &&
+            normalize(cityFromText) === selectedCityNorm
+          );
+        });
+
+        if (matched) {
+          setInsights(matched.text);
+          setLatestInsightId(matched.id);
+        } else {
+          // se não houver insight para essa cidade, limpa para mostrar mensagem padrão
+          setInsights("");
+        }
+      } catch (error) {
+        console.error("Erro ao carregar insight por cidade:", error);
+      } finally {
+        setIsInsightsLoading(false);
+      }
+    };
+
+    loadCityInsight();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedLog]);
 
   const handleExportCsv = async () => {
     try {
@@ -161,7 +231,6 @@ function HomePage() {
         setLatestInsightId(latest.id);
         return;
       }
-      // espera um pouco antes de tentar de novo
       await new Promise((resolve) => setTimeout(resolve, delayMs));
     }
   };
