@@ -9,22 +9,9 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import type { WeatherLog } from "@/interfaces/weather";
+import type { WeatherTableProps } from "@/interfaces/weather";
 import { cn } from "@/lib/utils";
 
-interface WeatherTableProps {
-  logs: WeatherLog[];
-  isLoading: boolean;
-  page: number;
-  pageSize: number;
-  totalCount: number;
-  onPrevPage: () => void;
-  onNextPage: () => void;
-  selectedId?: number | null;
-  onSelectLog?: (log: WeatherLog) => void;
-}
-
-// helper pra evitar erro de toFixed em undefined
 function formatNumber(
   value: number | null | undefined,
   digits: number = 1

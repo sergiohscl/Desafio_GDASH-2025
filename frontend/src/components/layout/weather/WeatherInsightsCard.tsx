@@ -1,9 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-interface WeatherInsightsCardProps {
-  insights: string;
-  isLoading: boolean;
-}
+import type { WeatherInsightsCardProps } from "@/interfaces/weather";
 
 export function WeatherInsightsCard({
   insights,

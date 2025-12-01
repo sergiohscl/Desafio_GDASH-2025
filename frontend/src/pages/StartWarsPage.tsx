@@ -1,4 +1,3 @@
-// src/pages/StarWarsPage.tsx
 import { useEffect, useState } from "react";
 import { starWarsService } from "@/services/starWarsService";
 import type { StarWarsPerson, StarWarsPeopleResponse } from "@/interfaces/starWars";
@@ -46,7 +45,6 @@ function StarWarsPage() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-50 flex flex-col">
-      {/* Aqui você pode passar as mesmas props do HomePage */}
       <AppHeader
         selectedCity="Brasília"
         onGenerateWeather={() => {}}
@@ -68,7 +66,6 @@ function StarWarsPage() {
           </div>
         </header>
 
-        {/* Paginação */}
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <Button
@@ -96,7 +93,6 @@ function StarWarsPage() {
           </span>
         </div>
 
-        {/* Grid de cards */}
         {isLoading ? (
           <p className="text-sm text-slate-300">Carregando personagens...</p>
         ) : (

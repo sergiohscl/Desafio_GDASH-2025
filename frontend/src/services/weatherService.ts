@@ -64,7 +64,6 @@ export async function listWeatherLogs(params?: {
     const { data } = await weatherApi.get<WeatherListResponse>("/weather/logs/", {
       params,
     });
-    //console.log("Fetched weather logs:", data);
     return data;
   } catch (error) {
     throw new Error(extractErrorMessage(error));
@@ -82,7 +81,6 @@ export async function getWeatherInsights(params?: {
       "/weather/logs/insights/",
       { params }
     );
-    //console.log("Fetched weather insights:", data);
     return data;
   } catch (error) {
     throw new Error(extractErrorMessage(error));
@@ -135,7 +133,6 @@ export async function exportWeatherXlsx(params?: {
   }
 }
 
-// busca o último insight salvo
 export async function getLatestWeatherInsight(): Promise<WeatherInsight | null> {
   const { data } = await weatherApi.get<WeatherInsight>(
     "/weather/logs/insights/latest/"
@@ -143,7 +140,6 @@ export async function getLatestWeatherInsight(): Promise<WeatherInsight | null> 
   return data;
 }
 
-// gera um novo insight com IA sob demanda
 export async function generateWeatherInsight(hours = 24): Promise<WeatherInsight> {
   const { data } = await weatherApi.post<WeatherInsight>(
     "/weather/logs/insights/generate/",
@@ -161,7 +157,6 @@ export async function generateWeatherInsightForCity(params: {
       hours: params.hours,
       city: params.city,
     });
-    // resposta é { detail, task_id, city, hours }
     return data;
   } catch (error) {
     throw new Error(extractErrorMessage(error));
@@ -176,7 +171,6 @@ export async function fetchCityWeather(city: string) {
     });
     return data;
   } catch (error) {
-    // usa seu helper pra extrair a mensagem
     throw new Error(extractErrorMessage(error));
   }
 }

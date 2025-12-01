@@ -4,6 +4,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import type { WeatherTemperatureChartProps } from "@/interfaces/weather";
 import {
   CartesianGrid,
   Line,
@@ -13,27 +14,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-
-// interface ChartPoint {
-//   time: string;
-//   temperature: number;
-//   rain_probability: number;
-// }
-
-// interface WeatherTemperatureChartProps {
-//   data: ChartPoint[];
-//   isLoading?: boolean;
-// }
-
-interface WeatherTemperatureChartProps {
-  data: {
-    time: string;
-    temperature: number;
-    rain_probability: number;
-  }[];
-  isLoading?: boolean;
-}
-
 
 
 export function WeatherTemperatureChart({

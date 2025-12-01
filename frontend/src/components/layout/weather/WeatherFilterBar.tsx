@@ -1,13 +1,5 @@
 import { Button } from "@/components/ui/button";
-
-interface WeatherFilterBarProps {
-  days: number;
-  isLoading: boolean;
-  isExporting: boolean;
-  onDaysChange: (days: number) => void;
-  onExportCsv: () => void;
-  onExportXlsx: () => void;
-}
+import type { WeatherFilterBarProps } from "@/interfaces/weather";
 
 export function WeatherFilterBar({
   days,

@@ -13,7 +13,7 @@ import {
 import { UserRound } from "lucide-react";
 
 import { authService } from "@/services/authService";
-import { API_BASE_URL } from "@/config/api";
+import { VITE_API_BASE_URL } from "@/config/api";
 import type { User } from "@/interfaces/auth";
 
 import {
@@ -81,12 +81,11 @@ const AppHeader: React.FC<AppHeaderProps> = ({
     user?.avatar && user.avatar.startsWith("http")
       ? user.avatar
       : user?.avatar
-      ? `${API_BASE_URL}${user.avatar}`
+      ? `${VITE_API_BASE_URL}${user.avatar}`
       : undefined;
 
   return (
     <header className="border-b border-slate-800 px-6 py-4 flex items-center justify-between bg-slate-950">
-      {/* Esquerda: logo + navegação + cidade */}
       <Dialog>
         <div className="flex items-center gap-6">
           <div className="flex flex-col">
@@ -105,7 +104,6 @@ const AppHeader: React.FC<AppHeaderProps> = ({
           </div>
 
           <nav className="hidden md:flex items-center gap-4 text-sm text-slate-300">
-            {/* 🔹 Dropdown de Relatórios com subitem Star Wars */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="hover:text-slate-50 transition-colors cursor-pointer">
@@ -130,7 +128,6 @@ const AppHeader: React.FC<AppHeaderProps> = ({
 
             </DropdownMenu>
 
-            {/* 🔹 Gerar clima abre o modal */}
             <DialogTrigger asChild>
               <button className="hover:text-slate-50 transition-colors cursor-pointer">
                 Gerar clima
@@ -139,7 +136,6 @@ const AppHeader: React.FC<AppHeaderProps> = ({
           </nav>
         </div>
 
-        {/* Modal de seleção de cidade */}
         <DialogContent className="bg-slate-950 border-slate-800 text-slate-50">
           <DialogHeader>
             <DialogTitle>Selecionar cidade</DialogTitle>
@@ -183,7 +179,6 @@ const AppHeader: React.FC<AppHeaderProps> = ({
         </DialogContent>
       </Dialog>
 
-      {/* Direita: usuário + avatar + menu */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button

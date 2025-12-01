@@ -1,9 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { WeatherLog } from "@/interfaces/weather";
-
-interface WeatherSummaryCardsProps {
-  log: WeatherLog | null;
-}
+import type { WeatherSummaryCardsProps } from "@/interfaces/weather";
 
 export function WeatherSummaryCards({ log }: WeatherSummaryCardsProps) {
   return (

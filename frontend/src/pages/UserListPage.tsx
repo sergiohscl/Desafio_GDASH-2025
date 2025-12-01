@@ -4,7 +4,7 @@ import { authService } from "@/services/authService";
 import type { User } from "@/interfaces/auth";
 import { toast } from "sonner";
 
-import { API_BASE_URL } from "@/config/api";
+import { VITE_API_BASE_URL } from "@/config/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Table,
@@ -43,7 +43,7 @@ function UsersListPage() {
   function getAvatarUrl(user: User) {
     if (!user.avatar) return undefined;
     if (user.avatar.startsWith("http")) return user.avatar;
-    return `${API_BASE_URL}${user.avatar}`;
+    return `${VITE_API_BASE_URL}${user.avatar}`;
   }
 
   async function handleDelete(id: number) {
@@ -67,7 +67,6 @@ function UsersListPage() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-50 flex flex-col">
-      {/* Pode reaproveitar o AppHeader com props "dummy" de clima */}
       <AppHeader
         selectedCity="Brasília"
         onGenerateWeather={() => {}}
